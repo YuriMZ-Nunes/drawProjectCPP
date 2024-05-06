@@ -27,17 +27,16 @@ vector<vector<Vec4i>> linesStack;
 vector<vector<Vec4i>> deletedLinesStack;
 
 /*TODO
-*	- borracha apagar a linha toda
 *	- criar formas
+*	- borracha apagar linhas e objetos
+*	- adaptar desfazer e voltar
 */
 
-void updateImage() {
-	
+void updateImage() { // Update function to show image
 	imshow("Drawing", currentImage(viewportRect));
-	
 }
 
-void controlZ() {
+void controlZ() { // function to undo changes, ctrl z
 	if (linesStack.size() <= 0)
 		return;
 
@@ -57,7 +56,7 @@ void controlZ() {
 	updateImage();
 }
 
-void controlV() {
+void controlV() { // function to return what was deleted
 
 	if (linesStack.size() == 0 && deletedLinesStack.size() == 0)
 		return;
@@ -80,7 +79,7 @@ void controlV() {
 	updateImage();
 }
 
-static void drawCallback(int event, int x, int y, int flags, void* param) {
+static void drawCallback(int event, int x, int y, int flags, void* param) { // get mouse and keyboard comands
 	switch (event) {
 		case EVENT_LBUTTONDOWN:
 			if (flags & EVENT_FLAG_CTRLKEY) {
@@ -181,23 +180,10 @@ static void drawCallback(int event, int x, int y, int flags, void* param) {
 			lines.clear();
 
 			break;
-		case EVENT_MOUSEWHEEL:
-			if (flags & EVENT_FLAG_CTRLKEY) {
-				isZooming = true;
-				if (flags > 0 && zoomLevel < maxZoom) {
-					zoomLevel *= 1.1;
-					updateImage();
-				}
-				if (flags < 0 && zoomLevel > -maxZoom) {
-					zoomLevel /= 1.1;
-					updateImage();
-				}
-			}
-			break;
 	}
 }
 
-int main()
+int main() // load image, set mouse callback and get keyboard key
 {
 	string imagePath = "C:/Users/Yuri/Desktop/big.jpg";
 
